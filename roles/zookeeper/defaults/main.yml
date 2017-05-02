@@ -1,0 +1,11 @@
+---
+apache_mirror: http://apache.mirrors.pair.com
+zk_version: '3.4.6'
+zookeeper_jmx_port: 9011
+zookeeper_data_dir: /var/lib/zookeeper
+zookeeper_data_log_dir: /var/lib/zookeeper
+zookeeper_snapshot_retain_count: 3
+zookeeper_purge_interval: 24
+#elk
+zookeeper_logs: /var/log/zookeeper
+index_log: comhub-logs-%{+YYYY-MM-dd}

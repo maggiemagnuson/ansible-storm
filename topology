@@ -1,0 +1,1 @@
+./storm jar /vagrant/storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar com.learningstorm.storm_example.LearningStormTopology LearningStormTopology

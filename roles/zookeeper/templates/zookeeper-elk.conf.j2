@@ -1,0 +1,50 @@
+input {
+    
+    file {
+        path =>  [ "{{zookeeper_logs}}/zookeeper.out" ]
+        type => "zookeeper-out"
+        start_position => "beginning"
+        codec => multiline
+                {
+                         pattern => "(^\d+\serror)|(^.+Exception: .+)|(^\s+at .+)|(^\?s+... \d+ more)|(^\s*Caused by:.+)|(^\s*$)|(^\s*[\r\n]/gm)"
+                         what => "previous"
+                         multiline_tag => "multi_tagged"
+                }
+    }
+    file {
+        path =>  [ "{{zookeeper_logs}}/zookeeper.err" ]
+        type => "zookeeper-err"
+        start_position => "beginning"
+        codec => multiline
+                {
+                         pattern => "(^\d+\serror)|(^.+Exception: .+)|(^\s+at .+)|(^\?s+... \d+ more)|(^\s*Caused by:.+)|(^\s*$)|(^\s*[\r\n]/gm)"
+                         what => "previous"
+                         multiline_tag => "multi_tagged"
+                }
+    }
+    
+}
+filter  {
+        if [type] in ["zookeeper-out", "zookeeper-err"]
+        {
+        mutate {
+            add_field => {
+                "application" => "zookeeper"
+                "hostname" => "%{host}"
+            }
+        }
+        grok {
+           pattern => "%{TIMESTAMP_ISO8601:timestamp} \[%{GREEDYDATA:PID}\] - %{LOGLEVEL:loglevel} %{GREEDYDATA:logmessage}"
+            add_tag => "logging_event"
+        }
+ }
+}
+
+output {
+        if [type] in ["zookeeper-out", "zookeeper-err"]{
+         elasticsearch_http {
+            host => "{{ groups['elasticsearch'][0] }}"
+            index => "{{index_log}}"
+            }
+    }
+}

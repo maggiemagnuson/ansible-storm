@@ -1,0 +1,6 @@
+---
+- name: Restart Nimbus
+  supervisorctl: name=storm-nimbus state=restarted
+
+- name: Restart UI
+  supervisorctl: name=storm-ui state=restarted

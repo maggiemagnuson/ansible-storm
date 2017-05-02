@@ -1,0 +1,14 @@
+[program:zookeeper]
+command=/opt/zookeeper-{{ zk_version }}/bin/zkServer.sh start-foreground
+autostart=true
+autorestart=true
+stopsignal=KILL
+startsecs=10
+startretries=99
+log_stdout=true
+stdout_logfile=/var/log/zookeeper/zookeeper.out
+stdout_logfile_maxbytes=0
+log_stderr=true
+stderr_logfile=/var/log/zookeeper/zookeeper.err
+stderr_logfile_maxbytes=0
+environment=SERVER_JVMFLAGS="-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port={{ zookeeper_jmx_port }} -Dcom.sun.management.jmxremote.rmi.port={{ zookeeper_jmx_port }}"

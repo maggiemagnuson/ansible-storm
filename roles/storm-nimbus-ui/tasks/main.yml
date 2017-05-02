@@ -1,0 +1,17 @@
+---
+# Configure and start nimbus as well as the UI
+- name: Configure storm.yaml
+  template: dest="{{storm_root_dir}}/apache-storm-{{storm_version}}/conf/storm.yaml" owner={{storm_user}} group={{storm_group}} mode=644 src=storm.yaml.j2
+  notify:
+    - Restart Nimbus
+    - Restart UI
+
+- name: Storm-Nimbus supervisord config
+  #template: src=storm-nimbus.ini dest=/etc/supervisord.d/storm-nimbus.ini
+  template: src=storm-nimbus.ini dest=/etc/supervisor/conf.d/storm-nimbus.ini
+  notify: Restart Nimbus
+
+- name: Storm-UI supervisord config
+  #template: src=storm-ui.ini dest=/etc/supervisord.d/storm-ui.ini
+  template: src=storm-ui.ini dest=/etc/supervisor/conf.d/storm-ui.ini
+  notify: Restart UI

@@ -1,0 +1,10 @@
+---
+- name: Configure storm.yaml
+  template: dest="{{storm_root_dir}}/apache-storm-{{storm_version}}/conf/storm.yaml" owner={{storm_user}} group={{storm_group}} mode=644 src=storm.yaml.j2
+  notify:
+    - Restart Supervisor
+
+- name: Storm-Nimbus supervisord config
+  #template: src=storm-supervisor.ini dest=/etc/supervisord.d/storm-supervisor.ini
+  template: src=storm-supervisor.ini dest=/etc/supervisor/conf.d/storm-supervisor.ini
+  notify: Restart Supervisor

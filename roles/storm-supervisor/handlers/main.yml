@@ -1,0 +1,6 @@
+---
+- name: Restart Supervisor
+  supervisorctl: name=storm-supervisor state=restarted
+
+- name: Restart Logviewer
+  supervisorctl: name=storm-logviewer state=restarted

@@ -1,0 +1,9 @@
+---
+- name: Add Ubuntu OpenJDK repo (for additional Java versions)
+  become: yes
+  apt_repository: repo='ppa:openjdk-r/ppa' state=present
+
+- name: Install OpenJDK
+  become: yes
+  apt:
+    name: openjdk-8-jdk

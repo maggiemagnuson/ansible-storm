@@ -1,0 +1,8 @@
+---
+apache_mirror: http://apache.mirrors.pair.com
+storm_version: 1.0.2
+storm_local_dir: /var/data/storm
+storm_java_library_path: "/usr/local/lib:/opt/local/lib:/usr/lib"
+storm_root_dir: /opt/
+storm_group: "storm"
+storm_user: "storm"

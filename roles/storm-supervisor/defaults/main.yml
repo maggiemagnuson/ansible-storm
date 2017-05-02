@@ -1,0 +1,43 @@
+---
+storm_workers_logpath: /var/log/storm
+index_log: comhub-logs-%{+YYYY-MM-dd}
+storm_version: 1.0.2
+storm_local_dir: /var/data/storm
+storm_java_library_path: "/usr/local/lib:/opt/local/lib:/usr/lib"
+storm_root_dir: /opt/
+storm_group: storm
+storm_user: "storm"
+storm_zookeeper_port: "2181"
+storm_drpc_extra_config:
+storm_nimbus_enabled: true
+nimbus_host: "{{ groups['storm-nimbus-ui'][0] }}"
+nimbus_thrift_port: 6627
+storm_nimbus_extra_config:
+    nimbus.childopts: "-Xmx1024m"
+storm_supervisor_enabled: true
+storm_supervisor_extra_config:
+    supervisor.childopts: "-Xmx1024m"
+storm_topology_extra_config:
+    topology.acker.executors: 1
+    topology.debug: false
+storm_transactional_extra_config:
+    transactional.zookeeper.port: "{{ storm_zookeeper_port }}"
+    transactional.zookeeper.root: "/storm-transactional"
+storm_ui_host: "{{ groups['storm-nimbus-ui'][0] }}"
+storm_ui_port: "8080"
+storm_ui_extra_config:
+    ui.childopts: "-Xmx768m"
+storm_worker_extra_config:
+    worker.childopts: "-Xmx1280m -XX:+UseConcMarkSweepGC -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=1%ID% -Dcom.sun.management.jmxremote.rmi.port=1%ID%"
+zookeeper_hosts: "  {%- for host in groups['zookeeper'] -%}
+                    {% if not loop.first %},{% endif %}{{host}}
+                    {%- endfor %}"
+storm_worker_ports: [6700, 6701, 6702, 6703]
+storm_zookeeper_extra_config:
+    storm.zookeeper.port:  "{{ storm_zookeeper_port }}"
+    storm.zookeeper.retry.interval: 5000
+    storm.zookeeper.retry.times: 60
+    storm.zookeeper.root: "/storm"
+    storm.zookeeper.session.timeout: 3000
+
+verify: True

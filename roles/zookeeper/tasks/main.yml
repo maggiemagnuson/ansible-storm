@@ -1,0 +1,40 @@
+---
+
+- name: Download zookeeper
+  get_url: timeout=300 url={{ apache_mirror }}/zookeeper/zookeeper-{{ zk_version }}/zookeeper-{{ zk_version }}.tar.gz dest=/opt/zookeeper-{{ zk_version }}.tar.gz
+
+- name: Extract archive
+  command: /bin/tar xvf /opt/zookeeper-{{ zk_version }}.tar.gz -C /opt/ creates=/opt/zookeeper-{{ zk_version }}
+  notify: restart zookeeper
+
+- name: Copy java.env file to zookeeper conf
+  template: src=java.env dest=/opt/zookeeper-{{ zk_version }}/conf/java.env
+  notify: restart zookeeper
+
+- name: Add supervisord configuration for zookeeper
+  #template: src=supervisor-zk.ini.j2 dest=/etc/supervisord.d/zookeeper.ini
+  template: src=supervisor-zk.ini.j2 dest=/etc/supervisor/conf.d/zookeeper.ini
+  notify: restart zookeeper
+
+- name: Create log directory for zookeeper
+  file: path=/var/log/zookeeper state=directory owner=root group=root mode=0550
+  notify: restart zookeeper
+
+- name: Create zookeeper data directory
+  file: path={{ zookeeper_data_dir }} state=directory
+  notify: restart zookeeper
+
+- name: Create zookeeper data_log directory
+  file: path={{ zookeeper_data_log_dir }} state=directory
+  notify: restart zookeeper
+
+- name: Configure zookeeper cluster id
+  template: src=myid dest={{ zookeeper_data_dir }}/myid
+  notify: restart zookeeper
+
+- name: Configure zookeeper with cluster
+  template: src=zoo.cfg dest=/opt/zookeeper-{{ zk_version }}/conf/zoo.cfg
+  notify: restart zookeeper
+
+- name: Configure logrotate for zookeeper
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/zookeeper

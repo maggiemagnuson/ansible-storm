@@ -1,0 +1,48 @@
+#-----------------------------
+# JDK SETUP
+#-----------------------------
+- hosts: all
+  sudo: yes
+  roles:
+    - jdk
+    - common
+
+#-----------------------------
+# SUPERVISORD SETUP
+#-----------------------------
+- hosts: all
+  sudo: yes
+  roles:
+    - supervisord
+
+#-----------------------------
+# ZOOKEEPER CLUSTER SETUP
+#-----------------------------
+- hosts: zookeeper
+  sudo: yes
+  roles:
+    - zookeeper
+
+#-----------------------------
+# STORM SETUP
+#-----------------------------
+- hosts: storm
+  sudo: yes
+  roles:
+    - storm
+
+#-----------------------------
+# STORM NIMBUS SETUP
+#-----------------------------
+- hosts: storm-nimbus-ui
+  sudo: yes
+  roles:
+    - storm-nimbus-ui
+
+#-----------------------------
+# STORM SUPERVISOR SETUP
+#-----------------------------
+- hosts: storm-supervisor
+  sudo: yes
+  roles:
+    - storm-supervisor

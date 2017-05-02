@@ -1,0 +1,4 @@
+192.168.33.100 zookeeper
+192.168.33.101 nimbus
+192.168.33.102 supervisor1
+192.168.33.103 supervisor2

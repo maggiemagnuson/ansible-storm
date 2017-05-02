@@ -1,0 +1,28 @@
+[all]
+# If you add a server here, add it to env-vagrant too
+# ansible_default_ipv4 variable is here to match what we set in the openstack inventory
+zookeeper ansible_ssh_host=192.168.33.100 ansible_default_ipv4=192.168.33.100
+nimbus ansible_ssh_host=192.168.33.101 ansible_default_ipv4=192.168.33.101
+supervisor1 ansible_ssh_host=192.168.33.102 ansible_default_ipv4=192.168.33.102
+supervisor2 ansible_ssh_host=192.168.33.103 ansible_default_ipv4=192.168.33.103
+
+[env-vagrant]
+zookeeper
+nimbus
+supervisor1
+supervisor2
+
+[zookeeper]
+zookeeper zookeeper_id=1
+
+[storm]
+nimbus
+supervisor1
+supervisor2
+
+[storm-nimbus-ui]
+nimbus
+
+[storm-supervisor]
+supervisor1
+supervisor2
